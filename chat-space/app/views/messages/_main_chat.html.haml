@@ -1,0 +1,28 @@
+.chat-main
+  .main-header
+    .main-header__left-box
+      %h2.main-header__left-box__current_group
+        group name
+      %ul.main-header__left-box__member-list
+        Member：
+        %li.main-header__left-box__member-list__member
+          aaaaa
+    .main-header__edit-btn
+      Edit
+  .messages
+    .message
+      .message__upper-info
+        %p.message__upper-info__user
+          shouya
+        %p.message__upper-info__date
+          2019/10/08/19:14:39
+      %p.message__text
+      this is first message
+  .form
+    %form{action: "", method: "post", type: "text", id: "new_message", class: "new_message" }
+      .input-box
+        %input{placeholder: "type a message", type: "text", name: "message", id: "message", class: "input-box__text"}
+          %label{class: "input-box__image"}
+            = icon('fas', 'image')
+            %input{type: "file", class: "input-box__image__file"}
+      %input{type: "submit", name: "commit", value: "Send", class: "submit-btn" }
