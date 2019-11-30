@@ -5,15 +5,17 @@
         = current_user.name
       %ul.side-header__box__menu
         %li
-          = link_to "#", class: "side-header__box__menu__new-group" do
+          = link_to new_group_path , class: "side-header__box__menu__new-group" do
             = icon('fas', 'edit')
 
         %li
           = link_to edit_user_path(current_user) , class: "side-header__box__menu__cog" do
             =icon('fas', 'cog')
   .groups
-    .group
-      %h3.group__name
-        グループ
-      %p.group__message
-        新着メッセージ
+    - current_user.groups.each do | group |
+      .group
+        = link_to group_messages_path(group) do
+          .group__name
+            = group.name
+          .group__message
+            メッセージはまだありません。
