@@ -40,6 +40,9 @@
       background-color: #2f3e51;
       padding: 20px 20px 0;
       overflow: scroll;
+      a {
+        text-decoration: none;
+      }
       .group {
         margin-bottom: 40px;
         &__name  {
@@ -134,6 +137,7 @@
         .input-box {
           position: relative;
           width: 100%;
+          background-color: white;
           &__text {
             height: 50px;
             width: 100%;
