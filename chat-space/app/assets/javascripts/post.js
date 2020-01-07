@@ -18,7 +18,6 @@ $(function() {
           </div>
           <img src=${post.image}>
         </div>`
-        // console.log("aa")
       return html;
     }  else {
         var html =
@@ -37,12 +36,10 @@ $(function() {
             </p>
           </div>
         </div>`
-        console.log(post.text)
       return html;
     };
   }
   $('#new_post').on('submit', function(e){
-    // console.log('#new_post')
       e.preventDefault();
       var formData = new FormData(this);
       var url = $(this).attr('action')
@@ -56,9 +53,13 @@ $(function() {
       })
   .done(function(data) {
     var html = buildHTML(data);
-    // console.log(data);
-    $('.message').append(html);
+    $('.messages').append(html);
     $('form')[0].reset();
+    $('.messages').animate({ scrollTop: $('.messages')[0].scrollHeight});
+    $(".submit-btn").prop('disabled', false);
   })
+  .fail(function() {
+      alert("メッセージ送信に失敗しました");
+  });
 })
 })
