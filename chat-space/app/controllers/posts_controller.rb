@@ -8,7 +8,9 @@ class PostsController < ApplicationController
     def create
       @post = @group.posts.new(post_params)
       if @post.save
-        redirect_to group_posts_path(@group), notice: 'メッセージが送信されました。'
+        respond_to do | format |
+          format.json
+        end
       else
         @posts = @group.posts.includes(:user)
         flash.now[:alert] = 'メッセージを入力してください。'
