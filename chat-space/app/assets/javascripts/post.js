@@ -1,4 +1,6 @@
 $(function() {
+
+  // console.log(last_message_id);
   function buildHTML(post) {
     if (post.image) {
       var html =
@@ -61,5 +63,20 @@ $(function() {
   .fail(function() {
       alert("メッセージ送信に失敗しました");
   });
-})
-})
+  })
+  var reloadMessages = function() {
+    last_message_id = $('.message:last').data("message-id");
+    $.ajax({
+      url: "api/posts",
+      type: 'get',
+      dataType: 'json',
+      data: {id: last_message_id}
+    })
+    .done(function(messages){
+      console.log('success');
+    })
+    .fail(function() {
+      console.log('error');
+    });
+  };
+});
