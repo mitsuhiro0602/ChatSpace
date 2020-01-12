@@ -1,46 +1,58 @@
 $(function() {
 
   // console.log(last_message_id);
-  function buildHTML(post) {
-    if (post.image) {
-      var html =
-        `<div class="message" data-post-id=${post.id}>
-          <div class="message__upper-info">
-            <div class="message__upper-info__user">
-              ${post.user_name}
-            </div>
-            <div class="message__upper-info__date">
-              ${post.created_at}
-            </div>
-          </div>
-          <div class="lower-message">
-            <p class="message__text">
-              ${post.text}
-            </p>
-          </div>
-          <img src=${post.image}>
-        </div>`
-      return html;
-    }  else {
-        var html =
-        `<div class="message" data-post-id=${post.id}>
-          <div class="message__upper-info">
-            <div class="message__upper-info__user">
-              ${post.user_name}
-            </div>
-            <div class="message__upper-info__date">
-              ${post.created_at}
-            </div>
-          </div>
-          <div class="lower-message">
-            <p class="message__text">
-              ${post.text}
-            </p>
-          </div>
-        </div>`
-      return html;
+  var buildHTML = function(post) {
+    if (post.text && post.image) {
+      var html = `<div class="message" data-post-id= ` + post.id + `>` +
+        `<div class="message__upper-info">` +
+            `<div class="message__upper-info__user">` +
+              post.user_name +
+            `</div>` +
+            `<div class="message__upper-info__date">` +
+              post.created_at
+            `</div>` +
+          `</div>` +
+          `<div class="lower-message">` +
+            `<p class="message__text">` +
+              post.text +
+            `</p>` +
+            `<img src="` + post.image + `" class="lower-message__image">` +
+          `</div>` +
+        `</div>`
+  } else if (post.text) {
+    var html = `<div class="message" data-post-id= ` + post.id + `>` +
+      `<div class="message__upper-info">` +
+          `<div class="message__upper-info__user">` +
+            post.user_name +
+          `</div>` +
+          `<div class="message__upper-info__date">` +
+            post.created_at +
+          `</div>` +
+        `</div>` +
+        `<div class="lower-message">` +
+          `<p class="message__text">` +
+            post.text +
+          `</p>` +
+        `</div>` +
+      `</div>`
+  } else if (post.image) {
+    var html = `<div class="message" data-post-id= ` + post.id + `>` +
+      `<div class="message__upper-info">` +
+          `<div class="message__upper-info__user">` +
+            post.user_name +
+          `</div>` +
+          `<div class="message__upper-info__date">` +
+            post.created_at
+          `</div>` +
+        `</div>` +
+        `<div class="lower-message">` +
+          `<img src="` + post.image + `" class="lower-message__image">` +
+        `</div>` +
+      `</div>`
     };
-  }
+    return html;
+  };
+
   $('#new_post').on('submit', function(e){
       e.preventDefault();
       var formData = new FormData(this);
@@ -72,11 +84,16 @@ $(function() {
       dataType: 'json',
       data: {id: last_message_id}
     })
-    .done(function(messages){
-      console.log('success');
+    .done(function(posts){
+      var insertHTML = '';
+      $.each(posts, function(i, post) {
+        insertHTML += buildHTML(post)
+      });
+      $('.messages').append(insertHTML);
     })
     .fail(function() {
       console.log('error');
     });
   };
+  setInterval(reloadMessages, 7000);
 });
