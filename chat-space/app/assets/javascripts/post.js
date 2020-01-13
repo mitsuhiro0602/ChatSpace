@@ -73,8 +73,8 @@ $(function() {
         $(".form__submit").prop("disabled", false);
       }
     })
-    .fail(function() {
-      console.log('error');
+    .fail(function(data) {
+      alert('自動更新に失敗しました');
     });
   };
   if (document.location.href.match(/\/groups\/\d+\/posts/)) {
