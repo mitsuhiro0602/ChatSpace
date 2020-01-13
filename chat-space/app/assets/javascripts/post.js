@@ -1,15 +1,13 @@
 $(function() {
-
-  // console.log(last_message_id);
   var buildHTML = function(post) {
     if (post.text && post.image) {
-      var html = `<div class="message" data-post-id= ` + post.id + `>` +
+      var html = `<div class="message" data-message-id= ` + post.id + `>` +
         `<div class="message__upper-info">` +
             `<div class="message__upper-info__user">` +
               post.user_name +
             `</div>` +
             `<div class="message__upper-info__date">` +
-              post.created_at
+              post.created_at +
             `</div>` +
           `</div>` +
           `<div class="lower-message">` +
@@ -20,7 +18,7 @@ $(function() {
           `</div>` +
         `</div>`
   } else if (post.text) {
-    var html = `<div class="message" data-post-id= ` + post.id + `>` +
+    var html = `<div class="message" data-message-id= ` + post.id + `>` +
       `<div class="message__upper-info">` +
           `<div class="message__upper-info__user">` +
             post.user_name +
@@ -36,13 +34,13 @@ $(function() {
         `</div>` +
       `</div>`
   } else if (post.image) {
-    var html = `<div class="message" data-post-id= ` + post.id + `>` +
+    var html = `<div class="message" data-message-id= ` + post.id + `>` +
       `<div class="message__upper-info">` +
           `<div class="message__upper-info__user">` +
             post.user_name +
           `</div>` +
           `<div class="message__upper-info__date">` +
-            post.created_at
+            post.created_at +
           `</div>` +
         `</div>` +
         `<div class="lower-message">` +
@@ -77,7 +75,8 @@ $(function() {
   });
   })
   var reloadMessages = function() {
-    last_message_id = $('.message:last').data("message-id");
+    var last_message_id = $('.messages .message:last').data("message-id");
+    console.log(last_message_id)
     $.ajax({
       url: "api/posts",
       type: 'get',
@@ -85,15 +84,23 @@ $(function() {
       data: {id: last_message_id}
     })
     .done(function(posts){
-      var insertHTML = '';
-      $.each(posts, function(i, post) {
-        insertHTML += buildHTML(post)
-      });
-      $('.messages').append(insertHTML);
+console.log(posts)
+      if (posts.length !== 0) {
+        var insertHTML = '';
+        $.each(posts, function(i, post) {
+          insertHTML += buildHTML(post)
+        });
+        $('.messages').append(insertHTML);
+        $('.messages').animate({ scrollTop: $('.messages')[0].scrollHeight});
+        $("#new_post")[0].reset();
+        $(".form__submit").prop("disabled", false);
+      }
     })
     .fail(function() {
       console.log('error');
     });
   };
+  if (document.location.href.match(/\/groups\/\d+\/posts/)) {
   setInterval(reloadMessages, 7000);
+  }
 });
