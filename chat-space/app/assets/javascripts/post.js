@@ -1,24 +1,6 @@
 $(function() {
   var buildHTML = function(post) {
-    if (post.text && post.image) {
-      var html = `<div class="message" data-message-id= ` + post.id + `>` +
-        `<div class="message__upper-info">` +
-            `<div class="message__upper-info__user">` +
-              post.user_name +
-            `</div>` +
-            `<div class="message__upper-info__date">` +
-              post.created_at +
-            `</div>` +
-          `</div>` +
-          `<div class="lower-message">` +
-            `<p class="message__text">` +
-              post.text +
-            `</p>` +
-            `<img src="` + post.image + `" class="lower-message__image">` +
-          `</div>` +
-        `</div>`
-  } else if (post.text) {
-    var html = `<div class="message" data-message-id= ` + post.id + `>` +
+    var common_HTML = `<div class="message" data-message-id= ` + post.id + `>` +
       `<div class="message__upper-info">` +
           `<div class="message__upper-info__user">` +
             post.user_name +
@@ -27,24 +9,21 @@ $(function() {
             post.created_at +
           `</div>` +
         `</div>` +
-        `<div class="lower-message">` +
-          `<p class="message__text">` +
-            post.text +
-          `</p>` +
+        `<div class="lower-message">`
+      var common_text = `<p class="message__text">` +
+          post.text +
+        `</p>`
+      var common_img = `<img src="` + post.image + `" class="lower-message__image">`
+    if (post.text && post.image) {
+      var html = common_HTML + common_text + common_img +
+        `</div>` +
+      `</div>`
+  } else if (post.text) {
+    var html = common_HTML + common_text +
         `</div>` +
       `</div>`
   } else if (post.image) {
-    var html = `<div class="message" data-message-id= ` + post.id + `>` +
-      `<div class="message__upper-info">` +
-          `<div class="message__upper-info__user">` +
-            post.user_name +
-          `</div>` +
-          `<div class="message__upper-info__date">` +
-            post.created_at +
-          `</div>` +
-        `</div>` +
-        `<div class="lower-message">` +
-          `<img src="` + post.image + `" class="lower-message__image">` +
+    var html = common_HTML + common_img +
         `</div>` +
       `</div>`
     };
@@ -76,7 +55,6 @@ $(function() {
   })
   var reloadMessages = function() {
     var last_message_id = $('.messages .message:last').data("message-id");
-    console.log(last_message_id)
     $.ajax({
       url: "api/posts",
       type: 'get',
@@ -84,7 +62,6 @@ $(function() {
       data: {id: last_message_id}
     })
     .done(function(posts){
-console.log(posts)
       if (posts.length !== 0) {
         var insertHTML = '';
         $.each(posts, function(i, post) {
