@@ -78,6 +78,6 @@ $(function() {
     });
   };
   if (document.location.href.match(/\/groups\/\d+\/posts/)) {
-  setInterval(reloadMessages, 7000);
+  setInterval(reloadMessages, 5000);
   }
 });
